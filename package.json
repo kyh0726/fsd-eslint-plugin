@@ -1,5 +1,5 @@
 {
-  "name": "eslint-plugin-fsd",
+  "name": "@yh/eslint-plugin-fsd",
   "version": "0.1.0",
   "description": "ESLint plugin for Feature-Sliced Design architecture",
   "main": "lib/index.js",

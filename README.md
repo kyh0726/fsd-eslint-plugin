@@ -1,13 +1,13 @@
-# eslint-plugin-fsd
+# @yh/eslint-plugin-fsd
 
 ESLint plugin for Feature-Sliced Design architecture.
 
 ## Installation
 
 ```bash
-npm install --save-dev eslint-plugin-fsd
+npm install --save-dev @yh/eslint-plugin-fsd
 # or
-yarn add --dev eslint-plugin-fsd
+yarn add --dev @yh/eslint-plugin-fsd
 ```
 
 ## Usage
@@ -16,7 +16,7 @@ yarn add --dev eslint-plugin-fsd
 
 ```javascript
 // eslint.config.js
-import fsd from 'eslint-plugin-fsd';
+import fsd from '@yh/eslint-plugin-fsd';
 
 export default [
   // Use recommended config
@@ -36,12 +36,12 @@ export default [
 
 ### ESLint 8 and below (Legacy Config)
 
-Add `fsd` to the plugins section of your `.eslintrc` configuration file:
+Add `@yh/fsd` to the plugins section of your `.eslintrc` configuration file:
 
 ```json
 {
-  "plugins": ["fsd"],
-  "extends": ["plugin:fsd/recommended"]
+  "plugins": ["@yh/fsd"],
+  "extends": ["plugin:@yh/fsd/recommended"]
 }
 ```
 
@@ -49,9 +49,9 @@ Or configure rules manually:
 
 ```json
 {
-  "plugins": ["fsd"],
+  "plugins": ["@yh/fsd"],
   "rules": {
-    "fsd/rule-name": "error"
+    "@yh/fsd/rule-name": "error"
   }
 }
 ```
@@ -63,8 +63,8 @@ Or configure rules manually:
 - `fsd.configs['flat/all']` - All available rules
 
 ### For ESLint 8 and below (Legacy Config)
-- `plugin:fsd/recommended` - Recommended rules for FSD architecture
-- `plugin:fsd/all` - All available rules
+- `plugin:@yh/fsd/recommended` - Recommended rules for FSD architecture
+- `plugin:@yh/fsd/all` - All available rules
 
 ## Rules
 
