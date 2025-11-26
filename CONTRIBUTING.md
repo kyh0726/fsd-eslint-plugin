@@ -6,11 +6,13 @@ Thank you for your interest in contributing to @yh-kim/eslint-plugin-fsd!
 
 1. Fork and clone the repository
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Run tests:
+
    ```bash
    npm test
    ```

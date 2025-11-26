@@ -1,10 +1,6 @@
 {
   "permissions": {
-    "allow": [
-      "Bash(mkdir:*)",
-      "Bash(tree:*)",
-      "Bash(cat:*)"
-    ],
+    "allow": ["Bash(mkdir:*)", "Bash(tree:*)", "Bash(cat:*)"],
     "deny": [],
     "ask": []
   }

@@ -27,12 +27,12 @@ export default [
   // Or configure manually
   {
     plugins: {
-      fsd: fsdPlugin
+      fsd: fsdPlugin,
     },
     rules: {
-      'fsd/rule-name': 'error'
-    }
-  }
+      'fsd/rule-name': 'error',
+    },
+  },
 ];
 ```
 
@@ -61,10 +61,12 @@ Or configure rules manually:
 ## Configurations
 
 ### For ESLint 9+ (Flat Config)
+
 - `fsdPlugin.configs['flat/recommended']` - Recommended rules for FSD architecture
 - `fsdPlugin.configs['flat/all']` - All available rules
 
 ### For ESLint 8 and below (Legacy Config)
+
 - `plugin:@yh-kim/fsd/recommended` - Recommended rules for FSD architecture
 - `plugin:@yh-kim/fsd/all` - All available rules
 
