@@ -18,16 +18,16 @@ pnpm add --save-dev @yh-kim/eslint-plugin-fsd
 
 ```javascript
 // eslint.config.js
-import fsd from '@yh-kim/eslint-plugin-fsd';
+import fsdPlugin from '@yh-kim/eslint-plugin-fsd';
 
 export default [
   // Use recommended config
-  fsd.configs['flat/recommended'],
+  fsdPlugin.configs['flat/recommended'],
 
   // Or configure manually
   {
     plugins: {
-      fsd
+      fsd: fsdPlugin
     },
     rules: {
       'fsd/rule-name': 'error'
@@ -61,8 +61,8 @@ Or configure rules manually:
 ## Configurations
 
 ### For ESLint 9+ (Flat Config)
-- `fsd.configs['flat/recommended']` - Recommended rules for FSD architecture
-- `fsd.configs['flat/all']` - All available rules
+- `fsdPlugin.configs['flat/recommended']` - Recommended rules for FSD architecture
+- `fsdPlugin.configs['flat/all']` - All available rules
 
 ### For ESLint 8 and below (Legacy Config)
 - `plugin:@yh-kim/fsd/recommended` - Recommended rules for FSD architecture
