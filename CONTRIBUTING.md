@@ -1,6 +1,6 @@
-# Contributing to @yh/eslint-plugin-fsd
+# Contributing to @yh-kim/eslint-plugin-fsd
 
-Thank you for your interest in contributing to @yh/eslint-plugin-fsd!
+Thank you for your interest in contributing to @yh-kim/eslint-plugin-fsd!
 
 ## Development Setup
 
