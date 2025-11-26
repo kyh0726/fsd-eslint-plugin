@@ -1,0 +1,33 @@
+# Source control
+.git/
+.github/
+
+# Tests
+tests/
+.mocharc.json
+coverage/
+.nyc_output/
+
+# Development files
+.eslintrc.js
+.prettierrc
+.editorconfig
+
+# Documentation (keep only README and LICENSE)
+docs/
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.log
+.env
