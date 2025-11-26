@@ -66,4 +66,4 @@ jobs:
 
       - name: Publish to npm
         if: steps.check_tag.outputs.exists == 'false'
-        run: npm publish --provenance --access public
+        run: npm publish --provenance
