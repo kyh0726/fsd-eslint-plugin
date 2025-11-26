@@ -39,11 +39,13 @@ jobs:
             echo "exists=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Upgrade npm
+        if: steps.check_tag.outputs.exists == 'false'
+        run: npm install -g npm@latest
+
       - name: Install dependencies
         if: steps.check_tag.outputs.exists == 'false'
-        run: |
-          npm install -g npm@latest
-          npm ci        
+        run: npm install        
 
       - name: Run tests
         if: steps.check_tag.outputs.exists == 'false'
