@@ -3,6 +3,13 @@
   "version": "0.1.0",
   "description": "ESLint plugin for Feature-Sliced Design architecture",
   "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "require": "./lib/index.js",
+      "import": "./lib/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "test": "mocha tests/**/*.js",
     "lint": "eslint .",
