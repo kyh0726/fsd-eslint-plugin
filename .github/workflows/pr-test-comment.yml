@@ -29,7 +29,7 @@ jobs:
 
       - name: Run tests
         id: test
-        run: npm test | tee test-output-${{ matrix.node-version }}.txt
+        run: npm test --no-color | tee test-output-${{ matrix.node-version }}.txt
         continue-on-error: true
 
       - name: Upload test results
@@ -60,6 +60,11 @@ jobs:
             const fs = require('fs');
             const path = require('path');
             
+            // ANSI 색상 코드 제거 함수
+            function stripAnsi(str) {
+              return str.replace(/\x1B\[[0-9;]*[a-zA-Z]/g, '');
+            }
+            
             // 모든 test-results 디렉토리 찾기
             const dirs = fs.readdirSync('.', { withFileTypes: true })
               .filter(dirent => dirent.isDirectory() && dirent.name.startsWith('test-results-'))
@@ -73,24 +78,44 @@ jobs:
             
             let allResults = '';
             let hasFailures = false;
+            let totalPassing = 0;
+            let totalFailing = 0;
             
             for (const dir of dirs) {
               const nodeVersion = dir.replace('test-results-', '');
               const files = fs.readdirSync(dir);
               
               if (files.length > 0) {
-                const content = fs.readFileSync(path.join(dir, files[0]), 'utf8');
-                allResults += `### Node ${nodeVersion}\n\n\`\`\`\n${content}\n\`\`\`\n\n`;
+                let content = fs.readFileSync(path.join(dir, files[0]), 'utf8');
                 
-                // 실패 체크
-                if (content.includes('failing')) {
+                // ANSI 색상 코드 제거
+                content = stripAnsi(content);
+                
+                // 테스트 결과 파싱
+                const passingMatch = content.match(/(\d+) passing/);
+                const failingMatch = content.match(/(\d+) failing/);
+                
+                if (passingMatch) totalPassing += parseInt(passingMatch[1]);
+                if (failingMatch) {
+                  totalFailing += parseInt(failingMatch[1]);
                   hasFailures = true;
                 }
+                
+                // 깔끔하게 포맷팅
+                const cleanContent = content
+                  .split('\n')
+                  .filter(line => line.trim())
+                  .join('\n');
+                
+                allResults += `<details>\n<summary>🔍 Node ${nodeVersion} 테스트 결과</summary>\n\n\`\`\`\n${cleanContent}\n\`\`\`\n\n</details>\n\n`;
               }
             }
             
+            // 요약 정보
             const statusEmoji = hasFailures ? '❌' : '✅';
-            const body = `## ${statusEmoji} 테스트 결과\n\n${allResults}`;
+            const summary = `**총 ${totalPassing + totalFailing}개 테스트** | ✅ ${totalPassing}개 통과${totalFailing > 0 ? ` | ❌ ${totalFailing}개 실패` : ''}`;
+            
+            const body = `## ${statusEmoji} 테스트 결과\n\n${summary}\n\n${allResults}`;
             
             // 기존 코멘트 찾기
             const comments = await github.rest.issues.listComments({
