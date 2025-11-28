@@ -1,8 +1,8 @@
 # @yh-kim/eslint-plugin-fsd
 
-Feature-Sliced Design (FSD) 아키텍처를 위한 ESLint 플러그인입니다.
+ESLint plugin for Feature-Sliced Design (FSD) architecture.
 
-## 설치
+## Installation
 
 ```bash
 npm install --save-dev @yh-kim/eslint-plugin-fsd
@@ -12,7 +12,7 @@ yarn add --dev @yh-kim/eslint-plugin-fsd
 pnpm add --save-dev @yh-kim/eslint-plugin-fsd
 ```
 
-## 사용법
+## Usage
 
 ### ESLint 9+ (Flat Config)
 
@@ -21,10 +21,10 @@ pnpm add --save-dev @yh-kim/eslint-plugin-fsd
 import fsdPlugin from '@yh-kim/eslint-plugin-fsd';
 
 export default [
-  // 추천 설정 사용
+  // Use recommended config
   fsdPlugin.configs['flat/recommended'],
 
-  // 또는 수동으로 설정
+  // Or configure manually
   {
     plugins: {
       fsd: fsdPlugin,
@@ -36,9 +36,9 @@ export default [
 ];
 ```
 
-### ESLint 8 이하 (Legacy Config)
+### ESLint 8 and below (Legacy Config)
 
-`.eslintrc` 설정 파일에 추가:
+Add to your `.eslintrc` configuration file:
 
 ```json
 {
@@ -47,7 +47,7 @@ export default [
 }
 ```
 
-또는 룰을 개별적으로 설정:
+Or configure rules individually:
 
 ```json
 {
@@ -58,7 +58,7 @@ export default [
 }
 ```
 
-### 옵션과 함께 사용
+### With Options
 
 ```json
 {
@@ -75,21 +75,21 @@ export default [
 }
 ```
 
-## 설정 프리셋
+## Configuration Presets
 
 ### ESLint 9+ (Flat Config)
 
-- `fsdPlugin.configs['flat/recommended']` - FSD 아키텍처를 위한 추천 규칙
-- `fsdPlugin.configs['flat/all']` - 모든 규칙 활성화
+- `fsdPlugin.configs['flat/recommended']` - Recommended rules for FSD architecture
+- `fsdPlugin.configs['flat/all']` - All available rules enabled
 
-### ESLint 8 이하 (Legacy Config)
+### ESLint 8 and below (Legacy Config)
 
-- `plugin:@yh-kim/fsd/recommended` - FSD 아키텍처를 위한 추천 규칙
-- `plugin:@yh-kim/fsd/all` - 모든 규칙 활성화
+- `plugin:@yh-kim/fsd/recommended` - Recommended rules for FSD architecture
+- `plugin:@yh-kim/fsd/all` - All available rules enabled
 
-## 프로젝트 구조 예시
+## Expected Project Structure
 
-이 플러그인은 다음과 같은 프로젝트 구조를 기대합니다:
+This plugin expects the following project structure:
 
 ```
 src/
@@ -114,35 +114,35 @@ src/
     └── api/
 ```
 
-## 규칙 목록
+## Rules
 
-### Import 관계 규칙
+### Import Relationship Rules
 
-| 규칙 | 설명 | 추천 |
-|------|------|:----:|
-| [no-cross-layer-import](./docs/rules/no-cross-layer-import.md) | FSD 레이어 순서를 강제합니다 (상위 레이어가 하위 레이어만 import 가능) | ✅ |
+| Rule | Description | Recommended |
+|------|-------------|:-----------:|
+| [no-cross-layer-import](./docs/rules/no-cross-layer-import.md) | Enforces FSD layer hierarchy (upper layers can only import from lower layers) | ✅ |
 
-## FSD 레이어 구조
+## FSD Layer Hierarchy
 
-이 플러그인은 다음과 같은 FSD 레이어 계층을 준수합니다:
+This plugin enforces the following FSD layer hierarchy:
 
 ```
-app      (최상위 - 애플리케이션 초기화)
+app      (Top - Application initialization)
   ↓
-pages    (페이지 라우트)
+pages    (Page routes)
   ↓
-widgets  (독립적인 UI 블록)
+widgets  (Independent UI blocks)
   ↓
-features (비즈니스 기능)
+features (Business features)
   ↓
-entities (비즈니스 엔티티)
+entities (Business entities)
   ↓
-shared   (최하위 - 공유 유틸리티)
+shared   (Bottom - Shared utilities)
 ```
 
-**규칙**: 각 레이어는 자신보다 아래에 있는 레이어만 import할 수 있습니다.
+**Rule**: Each layer can only import from layers below it.
 
-### ✅ 올바른 예시
+### ✅ Valid Examples
 
 ```javascript
 // ✅ app → pages
@@ -155,16 +155,16 @@ import { User } from '@/entities/user';
 import { Button } from '@/shared/ui';
 ```
 
-### ❌ 잘못된 예시
+### ❌ Invalid Examples
 
 ```javascript
-// ❌ pages → app (하위가 상위를 import)
+// ❌ pages → app (lower layer importing upper layer)
 import { config } from '@/app/config';
 
-// ❌ entities → features (하위가 상위를 import)
+// ❌ entities → features (lower layer importing upper layer)
 import { login } from '@/features/auth';
 
-// ❌ shared → entities (하위가 상위를 import)
+// ❌ shared → entities (lower layer importing upper layer)
 import { User } from '@/entities/user';
 ```
 

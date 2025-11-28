@@ -1,15 +1,15 @@
 # no-cross-layer-import
 
-FSD 아키텍처에서 상위 레이어가 하위 레이어를 import하는 것을 방지합니다.
+Prevents upper layers from importing lower layers in Feature-Sliced Design (FSD) architecture.
 
-## 📖 규칙 설명
+## 📖 Rule Details
 
-Feature-Sliced Design (FSD) 아키텍처는 계층적 구조를 가지고 있으며, 각 레이어는 자신보다 아래에 있는 레이어만 import할 수 있습니다.
+Feature-Sliced Design (FSD) architecture has a hierarchical structure where each layer can only import from layers below it.
 
-**FSD 레이어 순서 (위→아래):**
+**FSD Layer Order (top to bottom):**
 
 ```
-app      (최상위)
+app      (Top)
   ↓
 pages
   ↓
@@ -19,84 +19,84 @@ features
   ↓
 entities
   ↓
-shared   (최하위)
+shared   (Bottom)
 ```
 
-**허용되는 import 방향:**
-- ✅ 상위 레이어 → 하위 레이어 (예: `pages` → `widgets`)
-- ✅ 같은 레이어 내부 (예: `features/auth` → `features/auth/ui`)
-- ❌ 하위 레이어 → 상위 레이어 (예: `entities` → `features`)
+**Allowed import directions:**
+- ✅ Upper layer → Lower layer (e.g., `pages` → `widgets`)
+- ✅ Same layer (e.g., `features/auth` → `features/auth/ui`)
+- ❌ Lower layer → Upper layer (e.g., `entities` → `features`)
 
-## 🔴 잘못된 코드 예시
+## 🔴 Examples of Incorrect Code
 
 ```javascript
-// ❌ pages가 app을 import (하위가 상위를 import)
+// ❌ pages importing app (lower importing upper)
 // File: src/pages/home/index.js
 import { config } from '@/app/config';
 
-// ❌ widgets가 pages를 import
+// ❌ widgets importing pages
 // File: src/widgets/header/Header.js
 import { HomePage } from '@/pages/home';
 
-// ❌ features가 widgets를 import
+// ❌ features importing widgets
 // File: src/features/auth/index.js
 import { Sidebar } from '@/widgets/sidebar';
 
-// ❌ entities가 features를 import
+// ❌ entities importing features
 // File: src/entities/user/model.js
 import { login } from '@/features/auth';
 
-// ❌ shared가 entities를 import
+// ❌ shared importing entities
 // File: src/shared/ui/Avatar.js
 import { User } from '@/entities/user';
 
-// ❌ require 문법도 동일하게 체크
+// ❌ require syntax is also checked
 // File: src/features/auth/index.js
 const Header = require('@/widgets/header');
 
-// ❌ dynamic import도 체크
+// ❌ dynamic import is also checked
 // File: src/widgets/header/index.js
 const module = await import('@/pages/home');
 ```
 
-## 🟢 올바른 코드 예시
+## 🟢 Examples of Correct Code
 
 ```javascript
-// ✅ app이 pages를 import (상위가 하위를 import)
+// ✅ app importing pages (upper importing lower)
 // File: src/app/App.js
 import { MainPage } from '@/pages/main';
 
-// ✅ pages가 widgets를 import
+// ✅ pages importing widgets
 // File: src/pages/home/index.js
 import { Header } from '@/widgets/header';
 
-// ✅ widgets가 features를 import
+// ✅ widgets importing features
 // File: src/widgets/sidebar/Sidebar.js
 import { LoginForm } from '@/features/auth';
 
-// ✅ features가 entities를 import
+// ✅ features importing entities
 // File: src/features/profile/index.js
 import { User } from '@/entities/user';
 
-// ✅ entities가 shared를 import
+// ✅ entities importing shared
 // File: src/entities/post/ui/PostCard.js
 import { Button } from '@/shared/ui';
 
-// ✅ 같은 레이어 내 import
+// ✅ Same layer imports
 // File: src/entities/user/index.js
 import { UserCard } from './UserCard';
 
-// ✅ 외부 패키지 import
+// ✅ External package imports
 // File: src/pages/home/index.js
 import React from 'react';
 import { useQuery } from 'react-query';
 ```
 
-## ⚙️ 옵션
+## ⚙️ Options
 
 ### `alias`
 
-Path alias prefix를 지정합니다. 기본값은 `"@"`입니다.
+Specify the path alias prefix. Default is `"@"`.
 
 ```json
 {
@@ -110,7 +110,7 @@ Path alias prefix를 지정합니다. 기본값은 `"@"`입니다.
 
 ### `ignorePatterns`
 
-체크를 무시할 파일 패턴을 정규표현식 배열로 지정합니다.
+Specify file patterns to ignore as an array of regular expressions.
 
 ```json
 {
@@ -127,34 +127,33 @@ Path alias prefix를 지정합니다. 기본값은 `"@"`입니다.
 }
 ```
 
-## 💡 사용 시기
+## 💡 When to Use
 
-이 규칙은 다음과 같은 경우에 유용합니다:
+This rule is useful when:
 
-- Feature-Sliced Design 아키텍처를 프로젝트에 적용할 때
-- 레이어 간 의존성을 명확하게 관리하고 싶을 때
-- 순환 의존성을 방지하고 싶을 때
-- 코드베이스의 구조를 강제하고 싶을 때
+- Implementing Feature-Sliced Design architecture in your project
+- You want to manage layer dependencies explicitly
+- You want to prevent circular dependencies
+- You want to enforce architectural structure in your codebase
 
-## 🔗 관련 링크
+## 🔗 Further Reading
 
-- [Feature-Sliced Design 공식 문서](https://feature-sliced.design/)
+- [Feature-Sliced Design Official Documentation](https://feature-sliced.design/)
 - [FSD - Architectural Requirements](https://feature-sliced.design/docs/reference/layers)
 
-## ⚡ 구현 세부사항
+## ⚡ Implementation Details
 
-이 규칙은 다음과 같은 import 구문을 모두 체크합니다:
+This rule checks the following import statements:
 
-- ES6 `import` 문
-- CommonJS `require()` 호출
-- Dynamic `import()` 표현식
+- ES6 `import` statements
+- CommonJS `require()` calls
+- Dynamic `import()` expressions
 
-**지원하는 경로 형식:**
+**Supported path formats:**
 - Absolute alias (`@/entities/user`, `~/features/auth`)
-- Relative path (`../../entities/user`)
+- Relative paths (`../../entities/user`)
 
-**체크하지 않는 경우:**
-- 외부 패키지 import (`react`, `lodash` 등)
-- FSD 레이어가 아닌 디렉토리의 파일
-- 같은 레이어 내부의 import
-
+**Cases not checked:**
+- External package imports (`react`, `lodash`, etc.)
+- Files not in FSD layer directories
+- Imports within the same layer
