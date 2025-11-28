@@ -1,6 +1,6 @@
 {
   "name": "@yh-kim/eslint-plugin-fsd",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "ESLint plugin for Feature-Sliced Design architecture",
   "main": "lib/index.js",
   "exports": {
