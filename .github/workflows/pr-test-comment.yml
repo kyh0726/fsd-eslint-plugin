@@ -1,0 +1,124 @@
+name: PR Test Comment
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  test-and-comment:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        id: test
+        run: npm test | tee test-output-${{ matrix.node-version }}.txt
+        continue-on-error: true
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.node-version }}
+          path: test-output-${{ matrix.node-version }}.txt
+          retention-days: 7
+
+  comment-pr:
+    needs: test-and-comment
+    runs-on: ubuntu-latest
+    if: always()
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Download all test results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: test-results-*
+
+      - name: Comment PR with test results
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            // 모든 test-results 디렉토리 찾기
+            const dirs = fs.readdirSync('.', { withFileTypes: true })
+              .filter(dirent => dirent.isDirectory() && dirent.name.startsWith('test-results-'))
+              .map(dirent => dirent.name)
+              .sort();
+            
+            if (dirs.length === 0) {
+              console.log('No test results found');
+              return;
+            }
+            
+            let allResults = '';
+            let hasFailures = false;
+            
+            for (const dir of dirs) {
+              const nodeVersion = dir.replace('test-results-', '');
+              const files = fs.readdirSync(dir);
+              
+              if (files.length > 0) {
+                const content = fs.readFileSync(path.join(dir, files[0]), 'utf8');
+                allResults += `### Node ${nodeVersion}\n\n\`\`\`\n${content}\n\`\`\`\n\n`;
+                
+                // 실패 체크
+                if (content.includes('failing')) {
+                  hasFailures = true;
+                }
+              }
+            }
+            
+            const statusEmoji = hasFailures ? '❌' : '✅';
+            const body = `## ${statusEmoji} 테스트 결과\n\n${allResults}`;
+            
+            // 기존 코멘트 찾기
+            const comments = await github.rest.issues.listComments({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            
+            const botComment = comments.data.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('테스트 결과')
+            );
+            
+            if (botComment) {
+              // 기존 코멘트 업데이트
+              await github.rest.issues.updateComment({
+                comment_id: botComment.id,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: body
+              });
+            } else {
+              // 새 코멘트 생성
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: body
+              });
+            }
+
