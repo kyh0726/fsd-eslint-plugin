@@ -72,7 +72,11 @@ Or configure rules manually:
 
 ## Rules
 
-<!-- List of rules will be added here -->
+### Import 관계 규칙
+
+| Rule | Description | Recommended |
+|------|-------------|:-----------:|
+| [no-cross-layer-import](./docs/rules/no-cross-layer-import.md) | FSD 아키텍처에서 상위 레이어가 하위 레이어를 import하는 것을 방지합니다 | ✅ |
 
 ## Contributing
 
