@@ -101,17 +101,56 @@ src/
 │   └── profile/
 ├── widgets/
 │   ├── header/
+│   │   ├── model/
+│   │   ├── ui/
+│   │   └── index.ts
 │   └── sidebar/
 ├── features/
 │   ├── auth/
+│   │   ├── model/
+│   │   ├── ui/
+│   │   ├── api/
+│   │   └── index.ts
 │   └── comments/
 ├── entities/
 │   ├── user/
+│   │   ├── model/
+│   │   ├── ui/
+│   │   ├── api/
+│   │   ├── lib/
+│   │   └── index.ts
 │   └── post/
 └── shared/
     ├── ui/
     ├── lib/
     └── api/
+```
+
+### Slice Segment Structure
+
+Each slice (e.g., `entities/user`, `features/auth`) should only contain these segment folders:
+
+- **`model/`** - Business logic, stores, types
+- **`ui/`** - UI components
+- **`api/`** - API calls and data fetching
+- **`lib/`** - Slice-specific utility functions
+- **`config/`** - Configuration files and constants
+
+**Example - Valid Structure:**
+
+```
+entities/user/
+├── model/          ✅ Allowed
+├── ui/             ✅ Allowed
+├── api/            ✅ Allowed
+├── lib/            ✅ Allowed
+├── config/         ✅ Allowed
+└── index.ts        ✅ Root file
+
+entities/user/
+├── utils/          ❌ Invalid segment!
+├── helpers/        ❌ Invalid segment!
+└── constants/      ❌ Invalid segment! (use config/)
 ```
 
 ## Rules
@@ -121,6 +160,12 @@ src/
 | Rule                                                           | Description                                                                   | Recommended | Level |
 | -------------------------------------------------------------- | ----------------------------------------------------------------------------- | :---------: | :---: |
 | [no-cross-layer-import](./docs/rules/no-cross-layer-import.md) | Enforces FSD layer hierarchy (upper layers can only import from lower layers) |     ✅      | error |
+
+### Slice Structure Rules
+
+| Rule                                                             | Description                                                                              | Recommended | Level |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | :---------: | :---: |
+| [enforce-slice-segments](./docs/rules/enforce-slice-segments.md) | Enforces valid segment folders within slices (checks file system structure, not imports) |     ✅      | error |
 
 ## FSD Layer Hierarchy
 
