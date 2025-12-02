@@ -15,7 +15,8 @@
     "lint": "eslint .",
     "format": "prettier --write \"**/*.{js,json,md}\"",
     "format:check": "prettier --check \"**/*.{js,json,md}\"",
-    "version:patch": "npm version patch --no-git-tag-version"
+    "version:patch": "pnpm version patch --no-git-tag-version",
+    "prepare": "husky install"
   },
   "keywords": [
     "eslint",
@@ -45,8 +46,19 @@
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
     "mocha": "^10.3.0",
     "prettier": "^3.2.5"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
   },
   "files": [
     "lib",

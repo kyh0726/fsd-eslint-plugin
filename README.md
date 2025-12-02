@@ -5,11 +5,11 @@ ESLint plugin for Feature-Sliced Design (FSD) architecture.
 ## Installation
 
 ```bash
+pnpm add -D @yh-kim/eslint-plugin-fsd
+# or
 npm install --save-dev @yh-kim/eslint-plugin-fsd
 # or
 yarn add --dev @yh-kim/eslint-plugin-fsd
-# or
-pnpm add --save-dev @yh-kim/eslint-plugin-fsd
 ```
 
 ## Usage

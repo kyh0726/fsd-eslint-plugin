@@ -1,6 +1,10 @@
 # Dependencies
 node_modules/
 
+# Package managers
+package-lock.json
+yarn.lock
+
 # Logs
 logs
 *.log
@@ -8,6 +12,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
+pnpm-debug.log*
 
 # OS
 .DS_Store
