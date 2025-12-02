@@ -13,6 +13,7 @@
   "scripts": {
     "test": "mocha tests/**/*.js",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "format": "prettier --write \"**/*.{js,json,md}\"",
     "format:check": "prettier --check \"**/*.{js,json,md}\"",
     "version:patch": "pnpm version patch --no-git-tag-version",
