@@ -23,6 +23,7 @@ shared   (Bottom)
 ```
 
 **Allowed import directions:**
+
 - ✅ Upper layer → Lower layer (e.g., `pages` → `widgets`)
 - ✅ Same layer (e.g., `features/auth` → `features/auth/ui`)
 - ❌ Lower layer → Upper layer (e.g., `entities` → `features`)
@@ -101,9 +102,12 @@ Specify the path alias prefix. Default is `"@"`.
 ```json
 {
   "rules": {
-    "@yh-kim/fsd/no-cross-layer-import": ["error", {
-      "alias": "@"
-    }]
+    "@yh-kim/fsd/no-cross-layer-import": [
+      "error",
+      {
+        "alias": "@"
+      }
+    ]
   }
 }
 ```
@@ -115,14 +119,12 @@ Specify file patterns to ignore as an array of regular expressions.
 ```json
 {
   "rules": {
-    "@yh-kim/fsd/no-cross-layer-import": ["error", {
-      "ignorePatterns": [
-        "\\.test\\.",
-        "\\.spec\\.",
-        "/tests/",
-        "/stories/"
-      ]
-    }]
+    "@yh-kim/fsd/no-cross-layer-import": [
+      "error",
+      {
+        "ignorePatterns": ["\\.test\\.", "\\.spec\\.", "/tests/", "/stories/"]
+      }
+    ]
   }
 }
 ```
@@ -150,10 +152,12 @@ This rule checks the following import statements:
 - Dynamic `import()` expressions
 
 **Supported path formats:**
+
 - Absolute alias (`@/entities/user`, `~/features/auth`)
 - Relative paths (`../../entities/user`)
 
 **Cases not checked:**
+
 - External package imports (`react`, `lodash`, etc.)
 - Files not in FSD layer directories
 - Imports within the same layer

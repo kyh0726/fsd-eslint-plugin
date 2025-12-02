@@ -236,4 +236,3 @@ ruleTester.run('no-cross-layer-import', rule, {
 });
 
 console.log('✅ All tests passed for no-cross-layer-import rule!');
-

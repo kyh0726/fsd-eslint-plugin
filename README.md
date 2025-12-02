@@ -118,9 +118,9 @@ src/
 
 ### Import Relationship Rules
 
-| Rule | Description | Recommended | Level |
-|------|-------------|:-----------:|:-----:|
-| [no-cross-layer-import](./docs/rules/no-cross-layer-import.md) | Enforces FSD layer hierarchy (upper layers can only import from lower layers) | ✅ | error |
+| Rule                                                           | Description                                                                   | Recommended | Level |
+| -------------------------------------------------------------- | ----------------------------------------------------------------------------- | :---------: | :---: |
+| [no-cross-layer-import](./docs/rules/no-cross-layer-import.md) | Enforces FSD layer hierarchy (upper layers can only import from lower layers) |     ✅      | error |
 
 ## FSD Layer Hierarchy
 
@@ -146,11 +146,11 @@ shared   (Bottom - Shared utilities)
 
 ```javascript
 // ✅ Upper layer importing lower layer
-import { HomePage } from '@/pages/home';      // app → pages
-import { Header } from '@/widgets/header';    // pages → widgets
-import { LoginForm } from '@/features/auth';  // widgets → features
-import { User } from '@/entities/user';       // features → entities
-import { Button } from '@/shared/ui';         // entities → shared
+import { HomePage } from '@/pages/home'; // app → pages
+import { Header } from '@/widgets/header'; // pages → widgets
+import { LoginForm } from '@/features/auth'; // widgets → features
+import { User } from '@/entities/user'; // features → entities
+import { Button } from '@/shared/ui'; // entities → shared
 
 // ✅ Same layer imports
 import { UserCard } from './UserCard';
@@ -163,11 +163,11 @@ import React from 'react';
 
 ```javascript
 // ❌ Lower layer importing upper layer (violates hierarchy)
-import { config } from '@/app/config';        // pages → app ✗
-import { HomePage } from '@/pages/home';      // widgets → pages ✗
-import { Sidebar } from '@/widgets/sidebar';  // features → widgets ✗
-import { login } from '@/features/auth';      // entities → features ✗
-import { User } from '@/entities/user';       // shared → entities ✗
+import { config } from '@/app/config'; // pages → app ✗
+import { HomePage } from '@/pages/home'; // widgets → pages ✗
+import { Sidebar } from '@/widgets/sidebar'; // features → widgets ✗
+import { login } from '@/features/auth'; // entities → features ✗
+import { User } from '@/entities/user'; // shared → entities ✗
 ```
 
 ## Why Use This Plugin?
