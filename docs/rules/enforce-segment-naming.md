@@ -1,6 +1,6 @@
-# enforce-slice-segments
+# enforce-segment-naming
 
-Enforces valid segment folders within FSD slices. Only `model`, `ui`, `api`, and `lib` segments are allowed.
+Enforces valid segment folder names within FSD slices. Only `model`, `ui`, `api`, `lib`, and `config` segments are allowed.
 
 ## 📖 Rule Details
 
@@ -81,12 +81,12 @@ export const HomePage = () => {};
 
 ### `allowedSegments`
 
-You can customize the allowed segment names. Default is `["model", "ui", "api", "lib"]`.
+You can customize the allowed segment names. Default is `["model", "ui", "api", "lib", "config"]`.
 
 ```json
 {
   "rules": {
-    "@yh-kim/fsd/enforce-slice-segments": [
+    "@yh-kim/fsd/enforce-segment-naming": [
       "error",
       {
         "allowedSegments": ["model", "ui", "api", "lib", "config", "types"]

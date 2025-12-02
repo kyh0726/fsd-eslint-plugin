@@ -1,5 +1,5 @@
 const { RuleTester } = require('eslint');
-const rule = require('../../../lib/rules/enforce-slice-segments');
+const rule = require('../../../lib/rules/enforce-segment-naming');
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -8,7 +8,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.run('enforce-slice-segments', rule, {
+ruleTester.run('enforce-segment-naming', rule, {
   valid: [
     // ✅ 허용된 세그먼트: model
     {
@@ -231,4 +231,4 @@ ruleTester.run('enforce-slice-segments', rule, {
   ],
 });
 
-console.log('✅ All tests passed for enforce-slice-segments rule!');
+console.log('✅ All tests passed for enforce-segment-naming rule!');

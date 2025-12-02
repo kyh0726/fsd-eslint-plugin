@@ -161,11 +161,11 @@ entities/user/
 | -------------------------------------------------------------- | ----------------------------------------------------------------------------- | :---------: | :---: |
 | [no-cross-layer-import](./docs/rules/no-cross-layer-import.md) | Enforces FSD layer hierarchy (upper layers can only import from lower layers) |     ✅      | error |
 
-### Slice Structure Rules
+### Segment Naming Rules
 
 | Rule                                                             | Description                                                                              | Recommended | Level |
 | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | :---------: | :---: |
-| [enforce-slice-segments](./docs/rules/enforce-slice-segments.md) | Enforces valid segment folders within slices (checks file system structure, not imports) |     ✅      | error |
+| [enforce-segment-naming](./docs/rules/enforce-segment-naming.md) | Enforces valid segment folders within slices (checks file system structure, not imports) |     ✅      | error |
 
 ## FSD Layer Hierarchy
 
