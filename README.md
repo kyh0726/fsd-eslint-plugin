@@ -118,9 +118,9 @@ src/
 
 ### Import Relationship Rules
 
-| Rule | Description | Recommended |
-|------|-------------|:-----------:|
-| [no-cross-layer-import](./docs/rules/no-cross-layer-import.md) | Enforces FSD layer hierarchy (upper layers can only import from lower layers) | ✅ |
+| Rule | Description | Recommended | Level |
+|------|-------------|:-----------:|:-----:|
+| [no-cross-layer-import](./docs/rules/no-cross-layer-import.md) | Enforces FSD layer hierarchy (upper layers can only import from lower layers) | ✅ | error |
 
 ## FSD Layer Hierarchy
 
@@ -140,33 +140,43 @@ entities (Business entities)
 shared   (Bottom - Shared utilities)
 ```
 
-**Rule**: Each layer can only import from layers below it.
+**Core Principle**: Each layer can only import from layers below it in the hierarchy.
 
 ### ✅ Valid Examples
 
 ```javascript
-// ✅ app → pages
-import { HomePage } from '@/pages/home';
+// ✅ Upper layer importing lower layer
+import { HomePage } from '@/pages/home';      // app → pages
+import { Header } from '@/widgets/header';    // pages → widgets
+import { LoginForm } from '@/features/auth';  // widgets → features
+import { User } from '@/entities/user';       // features → entities
+import { Button } from '@/shared/ui';         // entities → shared
 
-// ✅ features → entities
-import { User } from '@/entities/user';
+// ✅ Same layer imports
+import { UserCard } from './UserCard';
 
-// ✅ entities → shared
-import { Button } from '@/shared/ui';
+// ✅ External packages
+import React from 'react';
 ```
 
 ### ❌ Invalid Examples
 
 ```javascript
-// ❌ pages → app (lower layer importing upper layer)
-import { config } from '@/app/config';
-
-// ❌ entities → features (lower layer importing upper layer)
-import { login } from '@/features/auth';
-
-// ❌ shared → entities (lower layer importing upper layer)
-import { User } from '@/entities/user';
+// ❌ Lower layer importing upper layer (violates hierarchy)
+import { config } from '@/app/config';        // pages → app ✗
+import { HomePage } from '@/pages/home';      // widgets → pages ✗
+import { Sidebar } from '@/widgets/sidebar';  // features → widgets ✗
+import { login } from '@/features/auth';      // entities → features ✗
+import { User } from '@/entities/user';       // shared → entities ✗
 ```
+
+## Why Use This Plugin?
+
+- **🏗️ Architecture Enforcement**: Automatically enforce FSD architectural principles
+- **🔒 Prevent Circular Dependencies**: Catch dependency violations before they become problems
+- **📚 Self-Documenting Code**: Clear layer structure makes codebase easier to understand
+- **⚡ Scalability**: Maintain clean architecture as your project grows
+- **🛡️ Type Safety**: Works seamlessly with TypeScript projects
 
 ## Contributing
 
