@@ -1,13 +1,3 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-echo "🔍 [Husky] Running pre-commit hook..."
-echo "📁 [Husky] Staged files:"
-git diff --cached --name-only
-
-echo ""
-echo "🔧 [Husky] Running lint-staged..."
-pnpm exec lint-staged --verbose
-
-echo "✅ [Husky] Pre-commit completed!"
+#!/bin/sh
+pnpm exec lint-staged
 
